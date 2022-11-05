@@ -1,10 +1,11 @@
 import React from 'react';
 import Collection from './components/collection';
+import './index.scss';
 
 function App() {
   return (
     <div className="App">
-    <h1></h1>
+    <h1>Моя коллекция фотографий</h1>
     <div className='top'>
     <ul className='tags'>
       <li className='active'>Все</li>
