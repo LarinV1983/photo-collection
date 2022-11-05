@@ -3,10 +3,11 @@ import Collection from './components/collection';
 import './index.scss';
 
 function App() {
+const [searchValue, setSearchValue] = React.useState('');
 const [collections, setCollections] = React.useState([]);
 
 React.useEffect(() => {
-  fetch('https://api.fake.rest/1db45b12-b3d8-464d-b459-ac372fcfe336')
+  fetch('')
   .then((res)=> res.json())
   .then((json) => {
     setCollections(json);
@@ -28,10 +29,13 @@ React.useEffect(() => {
       <li>Архитектура</li>
       <li>Города</li>
     </ul>
-     <input className='search-input' type="text" placeholder='Поиск по названию'/> 
+     <input value ={searchValue} onChange={(e) => setSearchValue(e.target.value)} 
+     className='search-input' type="text" placeholder='Поиск по названию'/> 
     </div>
     <div className='content'>
-    {collections.map((obj, index) => (
+    {collections.filter((obj)=> {
+      return obj.name.toLowerCase().includes(searchValue.toLowerCase());
+    }).map((obj, index) => (
       <Collection
         key={index}
         name={obj.name}
