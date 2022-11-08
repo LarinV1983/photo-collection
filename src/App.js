@@ -13,19 +13,21 @@ const cats = [
 function App() {
 const [searchValue, setSearchValue] = React.useState('');
 const [collections, setCollections] = React.useState([]);
-const [category, setCategory] = React.useState(0);
+const [categoryId, setCategoryId] = React.useState(0);
 
-// React.useEffect(() => {
-//   fetch('')
-//   .then((res)=> res.json())
-//   .then((json) => {
-//     setCollections(json);
-//   })
-//   .catch((err) => {
-//     console.warn(err);
-//     alert('Ошибка при получении данных');
-//   });
-// }, []);
+React.useEffect(() => {
+  fetch(`http://localhost:3002/collections?
+    ${categoryId ? `category=${categoryId}` : ''}`,
+    )
+  .then((res)=> res.json())
+  .then((json) => {
+    setCollections(json);
+  })
+  .catch((err) => {
+    console.warn(err);
+    alert('Ошибка при получении данных');
+  });
+}, [categoryId]);
 
   return (
     <div className="App">
@@ -33,8 +35,8 @@ const [category, setCategory] = React.useState(0);
     <div className='top'>
     <ul className='tags'>
    {cats.map((obj, index) => (
-    <li onClick={()=> setCategory(index)}
-    className={category=== index ? 'active' : ''} 
+    <li onClick={()=> setCategoryId(index)}
+    className={categoryId === index ? 'active' : ''} 
     key={obj.name}>
     {obj.name}
     </li>
