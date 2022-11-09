@@ -15,11 +15,14 @@ const [searchValue, setSearchValue] = React.useState('');
 const [collections, setCollections] = React.useState([]);
 const [categoryId, setCategoryId] = React.useState(0);
 const [isLoading, setIsLoading] = React.useState(true);
+const [page, setPage] = React.useState(0);
 
 React.useEffect(() => {
   setIsLoading(true);
-  fetch(`http://localhost:3002/collections?
-    ${categoryId ? `category=${categoryId}` : ''}`,
+  const category = categoryId ? `category=${categoryId}` : '';
+
+  fetch(`http://localhost:3002/collections?_page=${page}&_limit=3&
+    ${category}`,
     )
   .then((res)=> res.json())
   .then((json) => {
@@ -30,7 +33,7 @@ React.useEffect(() => {
     alert('Ошибка при получении данных');
   })
   .finally(() => setIsLoading(false));
-}, [categoryId]);
+}, [categoryId, page]);
 
   return (
     <div className="App">
@@ -62,9 +65,14 @@ React.useEffect(() => {
     )))}
     </div>
     <ul className='pagination'>
-      <li>1</li>
-      <li className='active'>2</li>
-      <li>3</li>
+      {
+        [...Array(4)].map((_, i) => (
+          <li onClick={()=> setPage(i + 1)} 
+          className={page === i + 1 ? 'active' : ''}>
+          {i + 1}
+          </li>
+      ))
+      }
     </ul>
     </div>
   );
