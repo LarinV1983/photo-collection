@@ -19,13 +19,12 @@ const [page, setPage] = React.useState(0);
 
 React.useEffect(() => {
   setIsLoading(true);
-  const category = categoryId ? `category=${categoryId}` : '';
 
-  fetch(`http://localhost:3002/collections?_page=${page}&_limit=3&
-    ${category}`,
+  fetch(`http://localhost:3002/collection?_page=${page}&_limit=3&
+    ${categoryId ? `category=${categoryId}` : ''}`,
     )
-  .then((res)=> res.json())
-  .then((json) => {
+  .then((res )=> res.json())
+  .then((json )=> {
     setCollections(json);
   })
   .catch((err) => {
@@ -40,16 +39,18 @@ React.useEffect(() => {
     <h1>Моя коллекция фотографий</h1>
     <div className='top'>
     <ul className='tags'>
-   {cats.map((obj, index) => (
-    <li onClick={()=> setCategoryId(index)}
-    className={categoryId === index ? 'active' : ''} 
+   {cats.map((obj, i) => (
+    <li onClick={()=> setCategoryId(i)}
+    className={categoryId === i ? 'active' : ''} 
     key={obj.name}>
     {obj.name}
     </li>
     ))}
     </ul>
-     <input value ={searchValue} onChange={(e) => setSearchValue(e.target.value)} 
-     className='search-input' type="text" placeholder='Поиск по названию'/> 
+     <input value ={searchValue} 
+     onChange={(e) => setSearchValue(e.target.value)} 
+     className='search-input' type="text" 
+     placeholder='Поиск по названию'/> 
     </div>
     <div className='content'>
    {isLoading ? (<h2>ИДЕТ ЗАГРУЗКА ...</h2>
@@ -68,7 +69,7 @@ React.useEffect(() => {
       {
         [...Array(4)].map((_, i) => (
           <li onClick={()=> setPage(i + 1)} 
-          className={page === i + 1 ? 'active' : ''}>
+          className={page === i + 1 ? 'active' : ''} key={i}>
           {i + 1}
           </li>
       ))
